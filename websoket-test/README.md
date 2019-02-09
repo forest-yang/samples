@@ -5,5 +5,5 @@ Support reconnect feature
 ```
  $ brew install websocketd  
  $ websocketd --port=8000 ./count.sh
-
+ drag count.html to browser
 ```
