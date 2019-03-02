@@ -1,0 +1,119 @@
+openapi: 3.0.0
+info:
+  title: Date test
+  description: test openAPI date usage
+  version: 1.0.0
+servers:
+  - url: "localhost"
+tags:
+  - name: vehicle
+    description: Operations about vehicle
+
+paths:
+  /vehicle:
+    post:
+      tags:
+        - vehicle
+      summary: Create vehicle
+      description: Create new vehicle.
+      operationId: createVehicle
+      requestBody:
+        description: the new vehicle object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vehicle'
+            example:
+              deviceId: "4242"
+              agvIp: "127.0.0.1:8089"
+              status: 1
+        required: true
+      responses:
+        '200':
+          description: create successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Result"
+  /vehicle/{id}:
+    get:
+      tags:
+        - vehicle
+      summary: Get vehicle by id
+      operationId: getVehicleById
+      parameters:
+        - name: id
+          in: path
+          description: The id of the vehicle that needs to be fetched.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleResponse'
+        400:
+          description: Invalid deviceId supplied
+        404:
+          description: Vehicle not found
+      x-accepts: application/json
+      x-tags:
+        - tag: vehicle
+components:
+  schemas:
+    Vehicle:
+      title: Vehicle
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        deviceId:
+          type: string
+        agvIp:
+          type: string
+        status:
+          type: integer
+          description: Vehicle Status
+          format: int32
+        createTime:
+          type: string
+          format: date-time
+          description: time vehicle created
+        updateTime:
+          type: string
+          format: date-time
+          description: time vehicle updated
+      description: AGV profile
+    VehicleResponse:
+      title: Vehicle response
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Vehicle'
+        result:
+          $ref: '#/components/schemas/Result'
+        count:
+          type: integer
+          format: int64
+    Result:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

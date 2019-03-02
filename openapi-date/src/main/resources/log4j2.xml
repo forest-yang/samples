@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="warn">
+    <appenders>
+        <console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+        </console>
+
+        <RollingFile name="rollingFileInfo" fileName="${sys:user.home}/logs/agvc/controller.log"
+                     filePattern="${sys:user.home}/logs/agvc/$${date:yyyy-MM}/controller-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+    </appenders>
+
+    <loggers>
+        <logger name="org.springframework" level="FATAL"/>
+        <root level="DEBUG">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="rollingFileInfo"/>
+        </root>
+    </loggers>
+</configuration>
